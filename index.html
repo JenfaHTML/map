@@ -1,7 +1,90 @@
-<!--https://api-v3.mbta.com/vehicles?filter[route]=1&include=trip-->
-
+<!DOCTYPE html>
 <html>
-    <body>
-        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3266.525969891806!2d114.27361546881532!3d22.426507557312526!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2shk!4v1673274723352!5m2!1sen!2shk" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-    </body>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js"></script>
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <style>
+      .whole-map {
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+      .map-overlay {
+        position: absolute;
+        left: 0;
+        padding: 10px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="whole-map">
+      <div id="map"></div>
+      <div class="map-overlay top">
+        <button style="font-size: 2em" onclick="move()">
+          Show stops between
+        </button>
+      </div>
+    </div>
+    <script>
+      mapboxgl.accessToken =
+        "pk.eyJ1IjoidGVzdHVzZXIxMDAwIiwiYSI6ImNraDkzZ2pkMzAzMHoycnBmMXpvZ3UwZnMifQ.jAE4YsPeAJv50VK92NSpOQ";
+
+      // TODO: create the map object using mapboxgl.map() function
+      let map = new mapboxgl.Map({
+        container: "map",
+        style: "mapbox://styles/mapbox/streets-v11",
+        center: [-71.104081, 42.365554],
+        zoom: 14,
+      });
+
+      let marker = new mapboxgl.Marker()
+        .setLngLat([-71.092761, 42.357575])
+        .addTo(map);
+
+      const busStops = [
+        [-71.093729, 42.359244],
+        [-71.094915, 42.360175],
+        [-71.0958, 42.360698],
+        [-71.099558, 42.362953],
+        [-71.103476, 42.365248],
+        [-71.106067, 42.366806],
+        [-71.108717, 42.368355],
+        [-71.110799, 42.369192],
+        [-71.113095, 42.370218],
+        [-71.115476, 42.372085],
+        [-71.117585, 42.373016],
+        [-71.118625, 42.374863],
+      ];
+
+      var counter = 0;
+      function move() {
+        setTimeout(() => {
+          if (counter >= busStops.length) return;
+          marker.setLngLat(busStops[counter]);
+          counter++;
+          move();
+        }, 1000);
+      }
+    </script>
+  </body>
 </html>
